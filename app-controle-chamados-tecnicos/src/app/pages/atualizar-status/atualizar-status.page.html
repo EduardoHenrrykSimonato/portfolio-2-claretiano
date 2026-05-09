@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="chamado ? '/detalhes-chamado/' + chamado.id : '/lista-chamados'"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Atualizar Status</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Caso Não Encontrado -->
+  <div *ngIf="!chamado" class="not-found">
+    <ion-icon name="warning-outline" color="warning"></ion-icon>
+    <p>Chamado não encontrado.</p>
+    <ion-button routerLink="/lista-chamados" fill="outline" shape="round">
+      Voltar para Lista
+    </ion-button>
+  </div>
+
+  <ion-card *ngIf="chamado">
+    <ion-card-header>
+      <ion-card-subtitle>Chamado #{{ chamado.id }}</ion-card-subtitle>
+      <ion-card-title>{{ chamado.titulo }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      
+      <!-- Informações Resumo -->
+      <div class="summary-box">
+        <p><strong>Técnico Atual:</strong> {{ chamado.tecnico }}</p>
+        <p><strong>Status Atual:</strong> {{ chamado.status }}</p>
+      </div>
+
+      <!-- Formulário de Atualização -->
+      <ion-list lines="none" class="ion-margin-top">
+        
+        <ion-item class="input-item">
+          <ion-label position="stacked">Novo Status <ion-text color="danger">*</ion-text></ion-label>
+          <ion-select [(ngModel)]="novoStatus" interface="action-sheet" cancelText="Cancelar">
+            <ion-select-option value="Aberto">Aberto</ion-select-option>
+            <ion-select-option value="Em atendimento">Em atendimento</ion-select-option>
+            <ion-select-option value="Concluído">Concluído</ion-select-option>
+            <ion-select-option value="Cancelado">Cancelado</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item class="input-item">
+          <ion-label position="stacked">Observação do Atendimento</ion-label>
+          <ion-textarea [(ngModel)]="novaObservacao" rows="4" placeholder="Descreva os procedimentos realizados ou o motivo do cancelamento..."></ion-textarea>
+        </ion-item>
+
+      </ion-list>
+
+      <ion-button expand="block" size="large" color="primary" class="ion-margin-top" (click)="salvar()">
+        <ion-icon name="save-outline" slot="start"></ion-icon>
+        Salvar Alterações
+      </ion-button>
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

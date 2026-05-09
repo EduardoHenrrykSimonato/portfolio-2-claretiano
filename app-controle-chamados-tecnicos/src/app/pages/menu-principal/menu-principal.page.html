@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Menu Principal</ion-title>
+    <!-- Botão de sair no cabeçalho -->
+    <ion-buttons slot="end">
+      <ion-button (click)="sair()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="menu-container">
+    <div class="header-text ion-margin-bottom">
+      <h2>Bem-vindo(a)</h2>
+      <p>Selecione uma opção abaixo:</p>
+    </div>
+
+    <!-- Seção: Chamados -->
+    <h3 class="section-title" *ngIf="sessaoService.isUsuario() || sessaoService.isAdministrador() || sessaoService.isTecnico()">Chamados</h3>
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col size="6" *ngIf="sessaoService.isUsuario() || sessaoService.isAdministrador()">
+          <ion-card class="menu-card" button routerLink="/cadastro-chamado">
+            <ion-icon name="add-circle-outline" color="primary"></ion-icon>
+            <p>Novo Chamado</p>
+          </ion-card>
+        </ion-col>
+        <ion-col size="6" *ngIf="sessaoService.isUsuario() || sessaoService.isAdministrador() || sessaoService.isTecnico()">
+          <ion-card class="menu-card" button routerLink="/lista-chamados">
+            <ion-icon name="list-outline" color="secondary"></ion-icon>
+            <p>Listar Todos</p>
+          </ion-card>
+        </ion-col>
+        <ion-col size="12" *ngIf="sessaoService.isUsuario() || sessaoService.isAdministrador()">
+          <ion-card class="menu-card horizontal" button routerLink="/resumo-chamados">
+            <ion-icon name="pie-chart-outline" color="tertiary"></ion-icon>
+            <p>Resumo de Chamados</p>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- Seção: Técnicos -->
+    <h3 class="section-title ion-margin-top" *ngIf="sessaoService.isAdministrador()">Técnicos</h3>
+    <ion-grid class="ion-no-padding" *ngIf="sessaoService.isAdministrador()">
+      <ion-row>
+        <ion-col size="6">
+          <ion-card class="menu-card" button routerLink="/cadastro-tecnico">
+            <ion-icon name="person-add-outline" color="success"></ion-icon>
+            <p>Novo Técnico</p>
+          </ion-card>
+        </ion-col>
+        <ion-col size="6">
+          <ion-card class="menu-card" button routerLink="/lista-tecnicos">
+            <ion-icon name="people-outline" color="warning"></ion-icon>
+            <p>Listar Técnicos</p>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- Seção: Outros -->
+    <h3 class="section-title ion-margin-top">Sistema</h3>
+    <ion-list lines="none" class="system-list">
+      <ion-item button routerLink="/sobre" detail="true" class="list-card">
+        <ion-icon name="information-circle-outline" slot="start" color="medium"></ion-icon>
+        <ion-label>Sobre o Aplicativo</ion-label>
+      </ion-item>
+      
+      <ion-item button (click)="sair()" detail="true" class="list-card">
+        <ion-icon name="log-out-outline" slot="start" color="danger"></ion-icon>
+        <ion-label color="danger">Encerrar Sessão</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

@@ -1,0 +1,17 @@
+.input-item {
+  --background: var(--ion-color-light);
+  --border-radius: 8px;
+  margin-bottom: 1rem;
+  --padding-start: 16px;
+  
+  ion-label {
+    font-weight: 500;
+  }
+}
+
+ion-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+  max-width: 600px;
+  margin: 0 auto;
+}

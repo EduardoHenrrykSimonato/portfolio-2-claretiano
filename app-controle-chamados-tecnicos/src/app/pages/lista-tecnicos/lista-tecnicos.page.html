@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu-principal"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Técnicos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  
+  <!-- Empty State -->
+  <div *ngIf="tecnicos.length === 0" class="empty-state">
+    <ion-icon name="people-circle-outline" color="medium"></ion-icon>
+    <p>Nenhum técnico cadastrado no momento.</p>
+    <ion-button routerLink="/cadastro-tecnico" fill="outline" shape="round">
+      Cadastrar Primeiro Técnico
+    </ion-button>
+  </div>
+
+  <!-- Lista de Técnicos -->
+  <div *ngIf="tecnicos.length > 0">
+    <ion-card *ngFor="let tec of tecnicos" class="tecnico-card">
+      <ion-card-header>
+        <div class="card-title-row">
+          <ion-card-title>{{ tec.nome }}</ion-card-title>
+          <ion-badge [color]="tec.situacao === 'Ativo' ? 'success' : 'medium'">
+            {{ tec.situacao }}
+          </ion-badge>
+        </div>
+        <ion-card-subtitle>{{ tec.especialidade }}</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="card-info">
+          <ion-icon name="call-outline"></ion-icon>
+          <span>{{ tec.contato }}</span>
+        </div>
+        
+        <div class="card-actions">
+          <ion-button fill="clear" color="danger" (click)="confirmarExclusao(tec)">
+            <ion-icon name="trash-outline" slot="start"></ion-icon>
+            Excluir
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  
+  <!-- Botão Flutuante (FAB) para cadastrar -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="tecnicos.length > 0">
+    <ion-fab-button color="primary" routerLink="/cadastro-tecnico">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

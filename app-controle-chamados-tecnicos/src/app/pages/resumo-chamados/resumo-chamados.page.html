@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu-principal"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Resumo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Empty State -->
+  <div *ngIf="total === 0" class="empty-state">
+    <ion-icon name="pie-chart-outline" color="medium"></ion-icon>
+    <p>Nenhum chamado cadastrado para gerar resumo.</p>
+    <ion-button routerLink="/cadastro-chamado" fill="outline" shape="round">
+      Cadastrar Chamado
+    </ion-button>
+  </div>
+
+  <!-- Dashboards -->
+  <div *ngIf="total > 0">
+    
+    <!-- Total Geral -->
+    <ion-card class="total-card">
+      <ion-card-content class="ion-text-center">
+        <ion-icon name="documents-outline"></ion-icon>
+        <h2>Total de Chamados</h2>
+        <h1>{{ total }}</h1>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Resumo por Status -->
+    <ion-card class="dashboard-card">
+      <ion-card-header>
+        <ion-card-title>Por Status</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list lines="none">
+          <ion-item>
+            <ion-badge color="primary" slot="start">Aberto</ion-badge>
+            <ion-label>Abertos</ion-label>
+            <span slot="end" class="metric">{{ resumoStatus.abertos }}</span>
+          </ion-item>
+          <ion-item>
+            <ion-badge color="warning" slot="start">Em andam.</ion-badge>
+            <ion-label>Em atendimento</ion-label>
+            <span slot="end" class="metric">{{ resumoStatus.emAtendimento }}</span>
+          </ion-item>
+          <ion-item>
+            <ion-badge color="success" slot="start">Concluído</ion-badge>
+            <ion-label>Concluídos</ion-label>
+            <span slot="end" class="metric">{{ resumoStatus.concluidos }}</span>
+          </ion-item>
+          <ion-item>
+            <ion-badge color="danger" slot="start">Cancelado</ion-badge>
+            <ion-label>Cancelados</ion-label>
+            <span slot="end" class="metric">{{ resumoStatus.cancelados }}</span>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Resumo por Prioridade -->
+    <ion-card class="dashboard-card">
+      <ion-card-header>
+        <ion-card-title>Por Prioridade</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list lines="none">
+          <ion-item>
+            <ion-badge color="success" slot="start">Baixa</ion-badge>
+            <ion-label>Baixa</ion-label>
+            <span slot="end" class="metric">{{ resumoPrioridade.baixa }}</span>
+          </ion-item>
+          <ion-item>
+            <ion-badge color="warning" slot="start">Média</ion-badge>
+            <ion-label>Média</ion-label>
+            <span slot="end" class="metric">{{ resumoPrioridade.media }}</span>
+          </ion-item>
+          <ion-item>
+            <ion-badge color="danger" slot="start">Alta</ion-badge>
+            <ion-label>Alta</ion-label>
+            <span slot="end" class="metric">{{ resumoPrioridade.alta }}</span>
+          </ion-item>
+          <ion-item>
+            <ion-badge color="dark" slot="start">Urgente</ion-badge>
+            <ion-label>Urgente</ion-label>
+            <span slot="end" class="metric">{{ resumoPrioridade.urgente }}</span>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+</ion-content>

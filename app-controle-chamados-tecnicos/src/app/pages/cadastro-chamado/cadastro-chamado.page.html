@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu-principal"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Novo Chamado</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Abertura de Chamado</ion-card-title>
+      <ion-card-subtitle>Status inicial será sempre "Aberto"</ion-card-subtitle>
+    </ion-card-header>
+    
+    <ion-card-content>
+      <ion-list lines="none">
+        
+        <!-- Solicitante -->
+        <ion-item class="input-item">
+          <ion-label position="stacked">Solicitante <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input type="text" [(ngModel)]="chamado.solicitante" placeholder="Quem está solicitando?"></ion-input>
+        </ion-item>
+
+        <!-- Setor -->
+        <ion-item class="input-item">
+          <ion-label position="stacked">Setor / Departamento</ion-label>
+          <ion-input type="text" [(ngModel)]="chamado.setor" placeholder="Opcional"></ion-input>
+        </ion-item>
+
+        <!-- Data Abertura -->
+        <ion-item class="input-item">
+          <ion-label position="stacked">Data de Abertura</ion-label>
+          <ion-input type="date" [(ngModel)]="chamado.dataAbertura" readonly></ion-input>
+        </ion-item>
+
+        <!-- Título -->
+        <ion-item class="input-item">
+          <ion-label position="stacked">Título do Chamado <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input type="text" [(ngModel)]="chamado.titulo" placeholder="Ex: Computador não liga"></ion-input>
+        </ion-item>
+
+        <!-- Descrição -->
+        <ion-item class="input-item">
+          <ion-label position="stacked">Descrição do Problema <ion-text color="danger">*</ion-text></ion-label>
+          <ion-textarea [(ngModel)]="chamado.descricao" rows="4" placeholder="Detalhe o problema..."></ion-textarea>
+        </ion-item>
+
+        <!-- Prioridade -->
+        <ion-item class="input-item">
+          <ion-label position="stacked">Prioridade <ion-text color="danger">*</ion-text></ion-label>
+          <ion-select [(ngModel)]="chamado.prioridade" placeholder="Selecione..." interface="action-sheet" cancelText="Cancelar">
+            <ion-select-option value="Baixa">Baixa</ion-select-option>
+            <ion-select-option value="Média">Média</ion-select-option>
+            <ion-select-option value="Alta">Alta</ion-select-option>
+            <ion-select-option value="Urgente">Urgente</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <!-- Técnico Responsável -->
+        <ion-item class="input-item" *ngIf="tecnicosAtivos.length > 0">
+          <ion-label position="stacked">Técnico Responsável <ion-text color="danger">*</ion-text></ion-label>
+          <ion-select [(ngModel)]="chamado.tecnico" placeholder="Selecione o técnico" interface="action-sheet" cancelText="Cancelar">
+            <ion-select-option *ngFor="let tec of tecnicosAtivos" [value]="tec.nome">
+              {{ tec.nome }} ({{ tec.especialidade }})
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item class="input-item" *ngIf="tecnicosAtivos.length === 0">
+          <ion-label position="stacked">Técnico Responsável <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input type="text" [(ngModel)]="chamado.tecnico" placeholder="Informe o nome manualmente"></ion-input>
+          <p style="font-size: 0.8rem; color: var(--ion-color-medium); margin-top: 4px;">Orientação: Cadastre técnicos antes para ver a lista de seleção.</p>
+        </ion-item>
+
+        <!-- Observação -->
+        <ion-item class="input-item">
+          <ion-label position="stacked">Observações</ion-label>
+          <ion-textarea [(ngModel)]="chamado.observacao" rows="2" placeholder="Opcional"></ion-textarea>
+        </ion-item>
+
+      </ion-list>
+
+      <ion-button expand="block" size="large" color="primary" class="ion-margin-top" (click)="salvar()">
+        <ion-icon name="paper-plane-outline" slot="start"></ion-icon>
+        Abrir Chamado
+      </ion-button>
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>

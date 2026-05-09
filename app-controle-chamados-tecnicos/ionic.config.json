@@ -1,0 +1,7 @@
+{
+  "name": "app-controle-chamados-tecnicos",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

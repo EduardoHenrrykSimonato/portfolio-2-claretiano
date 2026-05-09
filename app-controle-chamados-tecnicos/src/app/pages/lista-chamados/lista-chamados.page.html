@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu-principal"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Chamados</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  
+  <!-- Empty State -->
+  <div *ngIf="chamados.length === 0" class="empty-state">
+    <ion-icon name="document-text-outline" color="medium"></ion-icon>
+    <p>Nenhum chamado cadastrado no momento.</p>
+    <ion-button routerLink="/cadastro-chamado" fill="outline" shape="round">
+      Abrir Primeiro Chamado
+    </ion-button>
+  </div>
+
+  <!-- Lista de Chamados -->
+  <div *ngIf="chamados.length > 0">
+    <!-- Adicionamos (click)="abrirDetalhes" no ion-card para ele ser clicável como um todo -->
+    <ion-card *ngFor="let chamado of chamados" class="chamado-card" button="true" (click)="abrirDetalhes(chamado.id)">
+      <ion-card-header>
+        <div class="card-title-row">
+          <ion-card-title>#{{ chamado.id }} - {{ chamado.titulo }}</ion-card-title>
+        </div>
+        <div class="badges-row">
+          <ion-badge [color]="getCorStatus(chamado.status)">
+            {{ chamado.status }}
+          </ion-badge>
+          <ion-badge [color]="getCorPrioridade(chamado.prioridade)">
+            {{ chamado.prioridade }}
+          </ion-badge>
+        </div>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="card-info">
+          <ion-icon name="person-outline"></ion-icon>
+          <span><strong>Solicitante:</strong> {{ chamado.solicitante }}</span>
+        </div>
+        <div class="card-info">
+          <ion-icon name="build-outline"></ion-icon>
+          <span><strong>Técnico:</strong> {{ chamado.tecnico }}</span>
+        </div>
+        
+        <div class="card-actions">
+          <ion-button fill="clear" color="danger" (click)="confirmarExclusao(chamado, $event)">
+            <ion-icon name="trash-outline" slot="start"></ion-icon>
+            Excluir
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  
+  <!-- Botão Flutuante (FAB) para cadastrar -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="chamados.length > 0">
+    <ion-fab-button color="primary" routerLink="/cadastro-chamado">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

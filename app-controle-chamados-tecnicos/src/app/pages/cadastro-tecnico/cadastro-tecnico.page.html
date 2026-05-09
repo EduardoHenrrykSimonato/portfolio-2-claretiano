@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu-principal"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Novo Técnico</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Dados do Técnico</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="none">
+        
+        <!-- Nome -->
+        <ion-item class="input-item">
+          <ion-label position="stacked">Nome <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input type="text" [(ngModel)]="tecnico.nome" placeholder="Nome completo do técnico"></ion-input>
+        </ion-item>
+
+        <!-- Especialidade -->
+        <ion-item class="input-item">
+          <ion-label position="stacked">Especialidade <ion-text color="danger">*</ion-text></ion-label>
+          <ion-select [(ngModel)]="tecnico.especialidade" placeholder="Selecione a especialidade" interface="action-sheet" cancelText="Cancelar">
+            <ion-select-option value="Hardware">Hardware</ion-select-option>
+            <ion-select-option value="Software">Software</ion-select-option>
+            <ion-select-option value="Rede">Rede</ion-select-option>
+            <ion-select-option value="Impressora">Impressora</ion-select-option>
+            <ion-select-option value="Sistema interno">Sistema interno</ion-select-option>
+            <ion-select-option value="Outros">Outros</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <!-- Contato -->
+        <ion-item class="input-item">
+          <ion-label position="stacked">Contato <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input type="text" [(ngModel)]="tecnico.contato" placeholder="Telefone ou e-mail"></ion-input>
+        </ion-item>
+
+        <!-- Situação -->
+        <ion-item class="input-item">
+          <ion-label position="stacked">Situação <ion-text color="danger">*</ion-text></ion-label>
+          <ion-select [(ngModel)]="tecnico.situacao" interface="action-sheet" cancelText="Cancelar">
+            <ion-select-option value="Ativo">Ativo</ion-select-option>
+            <ion-select-option value="Inativo">Inativo</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+      </ion-list>
+
+      <ion-button expand="block" size="large" color="primary" class="ion-margin-top" (click)="salvar()">
+        <ion-icon name="save-outline" slot="start"></ion-icon>
+        Salvar Técnico
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
