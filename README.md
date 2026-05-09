@@ -246,86 +246,159 @@ Para explorar completamente os requisitos entregues, sugere-se a seguinte ordem 
 
 ### A. Fluxo geral do aplicativo
 ```mermaid
-graph TD
-    A[Login] -->|Sucesso| B[Menu Principal]
-    B --> C[Chamados]
-    B --> D[Técnicos]
-    B --> E[Resumo]
-    B --> F[Sobre]
-    C --> C1[Cadastrar Chamado]
-    C --> C2[Listar Chamados]
-    C2 --> C3[Detalhes]
-    C3 --> C4[Atualizar Status]
-    D --> D1[Cadastrar Técnico]
-    D --> D2[Listar Técnicos]
+flowchart TD
+    subgraph Autenticacao ["Área de Autenticação"]
+        L[Tela de Login]
+    end
+
+    subgraph Menu ["Navegação"]
+        MP[Menu Principal]
+    end
+
+    subgraph ModuloChamados ["Módulo de Chamados"]
+        CC[Cadastrar Chamado]
+        LC[Listar Chamados]
+        DC[Detalhes do Chamado]
+        AS[Atualizar Status]
+    end
+
+    subgraph ModuloTecnicos ["Módulo de Técnicos"]
+        CT[Cadastrar Técnico]
+        LT[Listar Técnicos]
+    end
+
+    subgraph Sistema ["Painéis Adicionais"]
+        RC[Resumo]
+        SO[Sobre o App]
+    end
+
+    L -->|Acesso Válido| MP
+    MP -->|Novo| CC
+    MP -->|Todos| LC
+    LC -->|Ver info| DC
+    DC -->|Alterar| AS
+    MP -->|Novo| CT
+    MP -->|Todos| LT
+    MP -->|Métricas| RC
+    MP -->|Info| SO
+    MP -->|Sair| L
 ```
 
 ### B. Casos de uso
 ```mermaid
 flowchart LR
-    Usuario([Usuário]) --> CC[Cadastrar Chamado]
-    Usuario --> VR[Visualizar Resumo]
-    Usuario --> VC[Visualizar Chamados]
-    
-    Tecnico([Técnico]) --> AS[Atualizar Status de Chamados]
-    Tecnico --> VC
-    
-    Admin([Administrador]) --> CC
-    Admin --> AS
-    Admin --> CT[Cadastrar Tecnico]
-    Admin --> VR
+    %% Atores
+    U([Usuário])
+    T([Técnico])
+    A([Administrador])
+
+    %% Casos de Uso
+    L(Realizar Login)
+    CC(Cadastrar Chamado)
+    LC(Listar Chamados)
+    VD(Visualizar Detalhes)
+    AS(Atualizar Status)
+    CT(Cadastrar Técnico)
+    LT(Listar Técnicos)
+    VR(Visualizar Resumo)
+    SO(Visualizar Sobre)
+    ES(Encerrar Sessão)
+
+    %% Conexões Usuario
+    U --> L
+    U --> CC
+    U --> LC
+    U --> VD
+    U --> VR
+    U --> SO
+    U --> ES
+
+    %% Conexões Tecnico
+    T --> L
+    T --> LC
+    T --> VD
+    T --> AS
+    T --> SO
+    T --> ES
+
+    %% Conexões Admin
+    A --> L
+    A --> CC
+    A --> LC
+    A --> VD
+    A --> AS
+    A --> CT
+    A --> LT
+    A --> VR
+    A --> SO
+    A --> ES
 ```
 
 ### C. Arquitetura do projeto
 ```mermaid
-graph LR
-    A[Componentes Visuais HTML/SCSS] --> B[Pages TS]
-    B --> C[Angular Router / AuthGuard]
-    B --> D[Services TS]
-    D --> E[Arrays em Memória]
-    E -.->|Tipagem| F[Models Interface]
+flowchart LR
+    U([Usuário]) --> P[Pages Ionic / Interface]
+    P --> AR[Angular Router / AuthGuard]
+    AR --> S[Services Angular]
+    
+    subgraph Memoria ["Armazenamento"]
+        S --> Mem[(Arrays em memória)]
+    end
+    
+    Mem -.->|Obedece regras| M{Models TS}
 ```
 
 ### D. Permissões por perfil
 ```mermaid
 flowchart TD
-    P[Perfil] --> U{É Usuario?}
-    P --> T{É Tecnico?}
-    P --> A{É Administrador?}
-    
-    U -->|Sim| R1[Telas: Menu, CadChamado, ListChamado, Resumo, Sobre]
-    T -->|Sim| R2[Telas: Menu, ListChamado, AtualizarStatus, Sobre]
-    A -->|Sim| R3[Telas: Acesso Total Irrestrito]
+    subgraph Perfis
+        U[usuario]
+        T[tecnico]
+        A[administrador]
+    end
+
+    subgraph Acesso ["Permissões de Telas"]
+        R1[Criar, Listar, Detalhes, Resumo, Sobre]
+        R2[Listar, Detalhes, Atualizar Status, Sobre]
+        R3[Acesso Total: Todas as Telas]
+    end
+
+    U --> R1
+    T --> R2
+    A --> R3
 ```
 
-### E. Fluxo de chamado
+### E. Fluxo do chamado
 ```mermaid
 stateDiagram-v2
-    [*] --> Aberto: Cadastrado
-    Aberto --> EmAtendimento: Assumido
-    EmAtendimento --> Concluido: Resolvido
-    Aberto --> Cancelado: Desistência
-    EmAtendimento --> Cancelado: Inválido
+    [*] --> Aberto : Cadastro do chamado
+    Aberto --> EmAtendimento : Visualização pelo técnico
+    EmAtendimento --> Concluido : Inserida Observação / Resolvido
+    EmAtendimento --> Cancelado : Inválido
+    Aberto --> Cancelado : Desistência
 ```
 
 ### F. Sequência simplificada de cadastro de chamado
 ```mermaid
 sequenceDiagram
-    participant U as Usuario
-    participant P as CadastroChamadoPage
+    actor U as Usuário
+    participant C as CadastroChamadoPage
     participant S as ChamadosService
-    participant A as Arrays Em Memória
-    
-    U->>P: Preenche formulário e clica Salvar
-    P->>P: Valida campos obrigatórios
-    P->>S: adicionarChamado(novoChamado)
+    participant A as Array (Memória)
+    participant L as ListaChamadosPage
+
+    U->>C: Preenche formulário e aperta ENTER/Salvar
+    C->>C: Valida campos obrigatórios
+    C->>S: adicionarChamado(novoChamado)
     S->>S: gerarIdChamado()
-    S->>A: push(novoChamado)
-    S-->>P: Sucesso
-    P-->>U: Exibe Toast e navega pro Menu
+    S->>A: Array.push()
+    A-->>S: Chamado Salvo
+    S-->>C: Retorna sucesso
+    C-->>U: Exibe Toast (Verde)
+    C->>L: Redireciona via Router
 ```
 
-### G. Classes/modelos
+### G. Diagrama de Classes/Models
 ```mermaid
 classDiagram
     class Chamado {
@@ -346,8 +419,21 @@ classDiagram
       +string contato
       +string situacao
     }
-    Chamado "1" *-- "1" Tecnico : Associado a
-```
+    class ChamadosService {
+      -Chamado[] chamados
+      +listarChamados()
+      +adicionarChamado()
+      +atualizarStatus()
+    }
+    class SessaoService {
+      -string perfilLogado
+      +definirPerfil()
+      +obterPerfil()
+      +temPermissao()
+    }
+
+    Chamado "*" --> "1" Tecnico : Associado
+    ChamadosService --> Chamado : Gerencia
 
 ## 20. Evidências de funcionamento
 Prints das telas e do seu funcionamento geral podem ser adicionados e armazenados posteriormente em `docs/evidencias/` ou `assets/prints/` visando facilitar a visualização da versão entregue.
