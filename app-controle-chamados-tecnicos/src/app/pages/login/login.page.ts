@@ -34,9 +34,16 @@ export class LoginPage implements OnInit {
       return;
     }
     const perfilPermitido = ['usuario', 'tecnico', 'administrador'];
-    if (!perfilPermitido.includes(this.usuario)) {
+
+    // Alias admin → administrador (facilita testes acadêmicos)
+    let perfilFinal = this.usuario;
+    if (this.usuario === 'admin') {
+      perfilFinal = 'administrador';
+    }
+
+    if (!perfilPermitido.includes(perfilFinal)) {
       const toast = await this.toastController.create({
-        message: 'Usuário inválido. Informe usuario, tecnico ou administrador.',
+        message: 'Usuário inválido. Use: admin, usuario, tecnico ou administrador.',
         duration: 3000,
         color: 'danger',
         position: 'top'
@@ -46,7 +53,7 @@ export class LoginPage implements OnInit {
     }
 
     // Salva na memória
-    this.sessaoService.definirPerfil(this.usuario as Perfil);
+    this.sessaoService.definirPerfil(perfilFinal as Perfil);
 
     // Navega para o menu principal de forma síncrona
     this.router.navigateByUrl('/menu-principal', { replaceUrl: true });

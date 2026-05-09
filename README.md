@@ -211,7 +211,28 @@ Fornecem acesso central aos arrays em memória:
 - **ESC no Menu Principal:** É ignorado deliberadamente.
 - O login só é encerrado pressionando/clicando no botão `Sair` ou `Encerrar Sessão`.
 
-## 17. Como executar o projeto
+## 17. Acesso ao Sistema
+
+Para fins acadêmicos e de teste, utilize:
+
+| Campo | Valor |
+|---|---|
+| **Usuário** | `admin` |
+| **Senha** | `admin` |
+
+Após o login com `admin / admin`, o sistema exibirá o menu principal com **acesso completo a todas as funcionalidades**.
+
+Outros acessos disponíveis (mantidos para demonstração de controle de perfil):
+
+| Usuário | Acesso |
+|---|---|
+| `admin` ou `administrador` | Todas as telas |
+| `usuario` | Cadastro e listagem de chamados, resumo e sobre |
+| `tecnico` | Listagem de chamados, atualização de status e sobre |
+
+> **Observação:** O projeto utiliza dados em **arrays em memória**, conforme solicitado na atividade. Os dados são mantidos apenas durante a execução do aplicativo e podem ser perdidos ao atualizar ou fechar a aplicação. Dois técnicos e dois chamados de exemplo já estão pré-carregados para facilitar a avaliação.
+
+## 18. Como executar o projeto
 
 **Pré-requisitos:**
 - Node.js 22.12.0

@@ -10,7 +10,39 @@ export class ChamadosService {
   private chamados: Chamado[] = [];
   private tecnicos: Tecnico[] = [];
 
-  constructor() {}
+  constructor() {
+    // Dados de demonstração para facilitar avaliação acadêmica
+    this.tecnicos = [
+      { id: 1, nome: 'Carlos Técnico', especialidade: 'Hardware', contato: 'carlos@email.com', situacao: 'Ativo' },
+      { id: 2, nome: 'Ana Suporte', especialidade: 'Software', contato: 'ana@email.com', situacao: 'Ativo' }
+    ];
+    this.chamados = [
+      {
+        id: 1,
+        solicitante: 'João Silva',
+        setor: 'Financeiro',
+        titulo: 'Computador não liga',
+        descricao: 'O computador do setor financeiro não está ligando desde esta manhã.',
+        prioridade: 'Alta',
+        dataAbertura: new Date().toISOString(),
+        tecnico: 'Carlos Técnico',
+        status: 'Aberto',
+        observacao: ''
+      },
+      {
+        id: 2,
+        solicitante: 'Maria Souza',
+        setor: 'RH',
+        titulo: 'Impressora sem conexão',
+        descricao: 'A impressora do setor de RH perdeu a conexão com a rede.',
+        prioridade: 'Média',
+        dataAbertura: new Date().toISOString(),
+        tecnico: 'Ana Suporte',
+        status: 'Em atendimento',
+        observacao: 'Verificando configurações de rede.'
+      }
+    ];
+  }
 
   gerarIdChamado(): number {
     return this.chamados.length > 0 ? Math.max(...this.chamados.map(c => c.id)) + 1 : 1;
