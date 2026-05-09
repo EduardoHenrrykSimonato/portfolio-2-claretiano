@@ -408,7 +408,8 @@ classDiagram
       +string titulo
       +string descricao
       +string prioridade
-      +Date dataAbertura
+      +string dataAbertura
+      +string tecnico
       +string status
       +string observacao
     }
@@ -421,19 +422,31 @@ classDiagram
     }
     class ChamadosService {
       -Chamado[] chamados
+      -Tecnico[] tecnicos
       +listarChamados()
       +adicionarChamado()
+      +buscarChamadoPorId()
+      +excluirChamado()
       +atualizarStatus()
+      +listarTecnicos()
+      +adicionarTecnico()
+      +excluirTecnico()
+      +gerarIdChamado()
+      +gerarIdTecnico()
+      +calcularResumoChamados()
     }
     class SessaoService {
       -string perfilLogado
       +definirPerfil()
       +obterPerfil()
+      +limparSessao()
       +temPermissao()
     }
 
-    Chamado "*" --> "1" Tecnico : Associado
-    ChamadosService --> Chamado : Gerencia
+    ChamadosService --> Chamado : gerencia
+    ChamadosService --> Tecnico : gerencia
+    SessaoService --> ChamadosService : controla_acesso
+```
 
 ## 20. Evidências de funcionamento
 Prints das telas e do seu funcionamento geral podem ser adicionados e armazenados posteriormente em `docs/evidencias/` ou `assets/prints/` visando facilitar a visualização da versão entregue.
